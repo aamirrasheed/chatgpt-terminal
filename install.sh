@@ -32,6 +32,6 @@ esac
 echo "alias $script_name=\"$install_dir/$script_name\"" >> "$config_file"
 
 # Source the shell configuration file
-source "$HOME/.zshrc"
+source "$config_file"
 
 echo "Installation complete. You can now use the '$script_name' command."
