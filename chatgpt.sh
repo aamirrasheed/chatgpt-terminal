@@ -38,7 +38,8 @@ while true; do
 
   # Package the user's input with the history using Python
   prompt_escaped=$(echo "$prompt" | sed "s/'/\\\\'/g" | sed 's/"/\\"/g')
-  json_payload=$(python3 -c "import json; history = json.loads('$history'); history.append({\"role\": \"user\", \"content\": \"$prompt_escaped\"}); print(json.dumps({'model': 'gpt-3.5-turbo', 'messages': history}))")
+  history_escaped=$(echo "$history" | sed "s/'/\\\\'/g" | sed 's/"/\\"/g')
+  json_payload=$(python3 -c """import json; history = json.loads('$history_escaped'); history.append({\"role\": \"user\", \"content\": \"$prompt_escaped\"}); print(json.dumps({'model': 'gpt-3.5-turbo', 'messages': history}))""")
 
   # Send the payload to the ChatGPT API
   response=$(curl -s -X POST \
@@ -48,7 +49,7 @@ while true; do
     https://api.openai.com/v1/chat/completions)
 
   # Extract the text of the response from the JSON output
-  text=$(echo "$response" | python3 -c 'import sys, json; print(json.loads(sys.stdin.read())["choices"][0]["message"]["content"])')
+  text=$(echo "$response" | python3 -c '''import sys, json; print(json.loads(sys.stdin.read())["choices"][0]["message"]["content"])''')
 
   # Print the response character by character
   printf %s "$text" | while IFS= read -r -n1 char; do
@@ -59,6 +60,7 @@ while true; do
   printf "\n"
 
   # Append the response to the history and write back out to disk using Python
-  updated_history=$(python3 -c "import json; history = json.loads('$history'); history.append({'role': 'assistant', 'content': '$text'}); print(json.dumps(history))")
+  text_escaped=$(echo "$text" | sed "s/'/\\\\'/g" | sed 's/"/\\"/g')
+  updated_history=$(python3 -c """import json; history = json.loads('$history_escaped'); history.append({\"role\": \"assistant\", \"content\": \"$text_escaped\"}); print(json.dumps(history))""")
   echo "{\"history\": $updated_history}" > "$history_file"
 done
