@@ -2,6 +2,8 @@
 
 Interact with ChatGPT in your terminal! Supported on Mac.
 
+![Demo](./output.gif)
+
 ## Prerequisites
 1. An OpenAI API key. If you don't have one, you'll need to [create an OpenAI Account](https://platform.openai.com/), then [create an OpenAI API key](https://platform.openai.com/account/api-keys).
 
