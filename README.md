@@ -6,7 +6,6 @@ Interact with ChatGPT in your terminal! Supported on Mac.
 1. An OpenAI API key. If you don't have one, you'll need to [create an OpenAI Account](https://platform.openai.com/), then [create an OpenAI API key](https://platform.openai.com/account/api-keys).
 
 ## Installation
-Open your terminal and run
 
 `curl -sSL https://raw.githubusercontent.com/aamirrasheed/chatgpt-terminal/main/install.sh | zsh`
 
