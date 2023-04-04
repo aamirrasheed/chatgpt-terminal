@@ -81,7 +81,7 @@ while true; do
   printf "\n"
 
   # Append the response to the history and write back out to disk using Python
-  text_escaped=$(echo "$text" | sed "s/'/\\\\'/g" | sed 's/"/\\"/g')
+  text_escaped=$(echo "$text" | sed "s/'/\\\\'/g" | sed 's/"/\\"/g' | tr -d '[:cntrl:]')
   updated_history=$(python3 -c """import json; history = json.loads('$history_escaped'); history.append({\"role\": \"assistant\", \"content\": \"$text_escaped\"}); print(json.dumps(history))""")
   echo "{\"history\": $updated_history}" > "$history_file"
 done
